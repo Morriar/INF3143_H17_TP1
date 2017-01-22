@@ -1,0 +1,189 @@
+--
+-- Copyright 2017 Alexandre Terrasa <alexandre@moz-code.org>.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+--
+
+model GamesOfWar
+
+-- War
+
+class War
+    attributes
+
+    operations
+        newGame(): Game
+        getFinishedGames(): Set(Game)
+        getWaitingGames(): Set(Game)
+end
+
+association WarGames between
+    War [0..1] role DO_NOT_USE
+    Game [*] role games
+end
+
+association WarPlayers between
+    War [0..1] role DO_NOT_USE
+    Human [*] role players
+end
+
+-- Game
+
+class Game
+    attributes
+        id: Integer
+        isStarted: Boolean
+        isFinished: Boolean
+    operations
+        start()
+        drawCards()
+        finish()
+        nextRound(): Round
+        canPlayRound(): Boolean
+        getScores(): Sequence(Integer)
+        addPlayer(player: Player)
+        getStatus(): String
+end
+
+association GameDeck between
+    Game [0..1] role DO_NOT_USE
+    Deck [0..1]
+end
+
+association GameRounds between
+    Game [0..1] role game
+    Round [*] role rounds ordered
+end
+
+association GameCurrentRound between
+    Game [0..1] role DO_NOT_USE
+    Round [0..1] role currentRound
+end
+
+association GamePlayers between
+    Game [*] role DO_NOT_USE2
+    Player [0..4] role players ordered
+end
+
+association GameWinner between
+    Game [0..1] role DO_NOT_USE3
+    Player [0..1] role winner
+end
+
+-- Round
+
+class Round
+    attributes
+        number: Integer
+        isFinished: Boolean
+    operations
+        playCard(hand: Hand, card: Card)
+end
+
+association RoundPlayers between
+    Round [0..1] role DO_NOT_USE4
+    Player [0..4] role players ordered
+end
+
+association RoundWinner between
+    Round [0..1] role DO_NOT_USE5
+    Player [0..1] role winner
+end
+
+association RoundCards between
+    Round [0..1] role DO_NOT_USE
+    Card [0..4] role cards ordered
+end
+
+-- Players
+
+class Player
+    attributes
+        name: String
+end
+
+association PlayerHands between
+    Player [0..1] role player
+	Hand [*] role hands
+end
+
+class Human < Player
+    attributes
+        password: String
+end
+
+class AI < Player
+end
+
+-- Hand
+
+class Hand
+	attributes
+		isEmpty: Boolean
+end
+
+association HandCards between
+    Hand [*] role DO_NOT_USE2
+	Card [*] role cards
+end
+
+association HandGame between
+    Hand [*] role DO_NOT_USE2
+	Game [1] role game
+end
+
+-- Deck
+
+class Deck
+	attributes
+		isEmpty: Boolean
+    operations
+        buildDeck()
+        draw(): Card
+        addCard(card: Card)
+end
+
+association DeckCards between
+    Deck [*] role DO_NOT_USE3
+    Card [0..54] role cards
+end
+
+association DeckStack between
+    Deck [0..1] role DO_NOT_USE4
+    Card [0..54] role stack ordered
+end
+
+-- Cards
+
+class Card
+    attributes
+        value: Integer
+    operations
+        isBetterThan(card: Card): Boolean
+end
+
+class Joker < Card
+end
+
+class ColoredCard < Card
+    attributes
+        color: String
+end
+
+class Figure < ColoredCard
+    attributes
+        name: String
+end
+
+class Value < ColoredCard
+end
