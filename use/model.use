@@ -76,7 +76,7 @@ association GamePlayers between
 end
 
 association GameWinner between
-    Game [0..1] role DO_NOT_USE3
+    Game [*] role DO_NOT_USE3
     Player [0..1] role winner
 end
 
@@ -96,7 +96,7 @@ association RoundPlayers between
 end
 
 association RoundWinner between
-    Round [0..1] role DO_NOT_USE5
+    Round [*] role DO_NOT_USE5
     Player [0..1] role winner
 end
 
