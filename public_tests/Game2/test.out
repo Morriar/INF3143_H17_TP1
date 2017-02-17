@@ -1,0 +1,25 @@
+checking structure...
+checking invariants...
+checking invariant (1) `Card::Card4': OK.
+checking invariant (2) `Card::Card5': OK.
+checking invariant (3) `Deck::Deck1': OK.
+checking invariant (4) `Deck::Deck2': OK.
+checking invariant (5) `Figure::Card2': OK.
+checking invariant (6) `Game::Game1': OK.
+checking invariant (7) `Game::Game2': FAILED.
+  -> false : Boolean
+checking invariant (8) `Game::Game3': OK.
+checking invariant (9) `Game::Game4': OK.
+checking invariant (10) `Game::Game5': OK.
+checking invariant (11) `Game::inv1': FAILED.
+  -> false : Boolean
+checking invariant (12) `Human::Player2': OK.
+checking invariant (13) `Human::Player3': OK.
+checking invariant (14) `Joker::Card1': OK.
+checking invariant (15) `Player::Player1': OK.
+checking invariant (16) `Round::Round1': OK.
+checking invariant (17) `Round::Round2': OK.
+checking invariant (18) `Value::Card3': OK.
+checking invariant (19) `War::War1': OK.
+checking invariant (20) `War::War4': OK.
+checked 20 invariants, 2 failures.
