@@ -1,0 +1,35 @@
+postcondition `Deck3' is false
+  self : Deck = d1
+  self.cards : Set(Card) = Set{c10,c2,c3,c4,c5,c6,c7,c8,c9,ca,cj,ck,cq,d10,d2,d3,d4,d5,d6,d7,d8,d9,da,dj,dk,dq,h10,h2,h3,h4,h5,h6,h7,h8,h9,ha,hj,hk,hq,j1,j2,s10,s2,s3,s4,s5,s6,s7,s8,s9,sa,sj,sk,sq}
+  card : Joker = j2
+  self.cards->includes(card) : Boolean = true
+  self : Deck = d1
+  self.stack : OrderedSet(Card) = OrderedSet{j1}
+  card : Joker = j2
+  self.stack->includes(card) : Boolean = false
+  (self.cards->includes(card) and self.stack->includes(card)) : Boolean = false
+Error: postcondition false in operation call `Deck::addCard(self:d1, card:j2)'.
+checking structure...
+checking invariants...
+checking invariant (1) `Card::Card4': OK.
+checking invariant (2) `Card::Card5': OK.
+checking invariant (3) `Deck::Deck1': OK.
+checking invariant (4) `Deck::Deck2': OK.
+checking invariant (5) `Figure::Card2': OK.
+checking invariant (6) `Game::Game1': OK.
+checking invariant (7) `Game::Game2': OK.
+checking invariant (8) `Game::Game3': OK.
+checking invariant (9) `Game::Game4': OK.
+checking invariant (10) `Game::Game5': OK.
+checking invariant (11) `Game::inv1': FAILED.
+  -> false : Boolean
+checking invariant (12) `Human::Player2': OK.
+checking invariant (13) `Human::Player3': OK.
+checking invariant (14) `Joker::Card1': OK.
+checking invariant (15) `Player::Player1': OK.
+checking invariant (16) `Round::Round1': OK.
+checking invariant (17) `Round::Round2': OK.
+checking invariant (18) `Value::Card3': OK.
+checking invariant (19) `War::War1': OK.
+checking invariant (20) `War::War4': OK.
+checked 20 invariants, 1 failure.

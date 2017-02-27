@@ -1,0 +1,253 @@
+--
+-- Copyright 2017 Alexandre Terrasa <alexandre@moz-code.org>.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+--
+
+-- War instance
+
+!create w1: War
+
+-- Create some players
+
+!create p1: Human
+!set p1.name := 'Alex'
+!set p1.password := 'password'
+!create p2: Human
+!set p2.name := 'Joe'
+!set p2.password := 'abcd1234'
+!create p3: AI
+!set p3.name := 'Lucy'
+!create p4: AI
+!set p4.name := 'Jane'
+
+!create px: Human
+!set px.name := 'Dorian'
+!set px.password := 'abcdefgh'
+
+!insert(w1, p1) into WarPlayers
+!insert(w1, p2) into WarPlayers
+
+-- Create a deck
+
+!create d1: Deck
+
+!create j1: Joker
+!set j1.value := 15
+!insert(d1, j1) into DeckCards
+!create j2: Joker
+!set j2.value := 15
+!insert(d1, j2) into DeckCards
+!create s2: Value
+!set s2.value := 2
+!insert(d1, s2) into DeckCards
+!create s3: Value
+!set s3.value := 3
+!insert(d1, s3) into DeckCards
+!create s4: Value
+!set s4.value := 4
+!insert(d1, s4) into DeckCards
+!create s5: Value
+!set s5.value := 5
+!insert(d1, s5) into DeckCards
+!create s6: Value
+!set s6.value := 6
+!insert(d1, s6) into DeckCards
+!create s7: Value
+!set s7.value := 7
+!insert(d1, s7) into DeckCards
+!create s8: Value
+!set s8.value := 8
+!insert(d1, s8) into DeckCards
+!create s9: Value
+!set s9.value := 9
+!insert(d1, s9) into DeckCards
+!create s10: Value
+!set s10.value := 10
+!insert(d1, s10) into DeckCards
+!create sj: Figure
+!set sj.value := 11
+!insert(d1, sj) into DeckCards
+!create sq: Figure
+!set sq.value := 12
+!insert(d1, sq) into DeckCards
+!create sk: Figure
+!set sk.value := 13
+!insert(d1, sk) into DeckCards
+!create sa: Figure
+!set sa.value := 14
+!insert(d1, sa) into DeckCards
+!create h2: Value
+!set h2.value := 2
+!insert(d1, h2) into DeckCards
+!create h3: Value
+!set h3.value := 3
+!insert(d1, h3) into DeckCards
+!create h4: Value
+!set h4.value := 4
+!insert(d1, h4) into DeckCards
+!create h5: Value
+!set h5.value := 5
+!insert(d1, h5) into DeckCards
+!create h6: Value
+!set h6.value := 6
+!insert(d1, h6) into DeckCards
+!create h7: Value
+!set h7.value := 7
+!insert(d1, h7) into DeckCards
+!create h8: Value
+!set h8.value := 8
+!insert(d1, h8) into DeckCards
+!create h9: Value
+!set h9.value := 9
+!insert(d1, h9) into DeckCards
+!create h10: Value
+!set h10.value := 10
+!insert(d1, h10) into DeckCards
+!create hj: Figure
+!set hj.value := 11
+!insert(d1, hj) into DeckCards
+!create hq: Figure
+!set hq.value := 12
+!insert(d1, hq) into DeckCards
+!create hk: Figure
+!set hk.value := 13
+!insert(d1, hk) into DeckCards
+!create ha: Figure
+!set ha.value := 14
+!insert(d1, ha) into DeckCards
+!create c2: Value
+!set c2.value := 2
+!insert(d1, c2) into DeckCards
+!create c3: Value
+!set c3.value := 3
+!insert(d1, c3) into DeckCards
+!create c4: Value
+!set c4.value := 4
+!insert(d1, c4) into DeckCards
+!create c5: Value
+!set c5.value := 5
+!insert(d1, c5) into DeckCards
+!create c6: Value
+!set c6.value := 6
+!insert(d1, c6) into DeckCards
+!create c7: Value
+!set c7.value := 7
+!insert(d1, c7) into DeckCards
+!create c8: Value
+!set c8.value := 8
+!insert(d1, c8) into DeckCards
+!create c9: Value
+!set c9.value := 9
+!insert(d1, c9) into DeckCards
+!create c10: Value
+!set c10.value := 10
+!insert(d1, c10) into DeckCards
+!create cj: Figure
+!set cj.value := 11
+!insert(d1, cj) into DeckCards
+!create cq: Figure
+!set cq.value := 12
+!insert(d1, cq) into DeckCards
+!create ck: Figure
+!set ck.value := 13
+!insert(d1, ck) into DeckCards
+!create ca: Figure
+!set ca.value := 14
+!insert(d1, ca) into DeckCards
+!create d2: Value
+!set d2.value := 2
+!insert(d1, d2) into DeckCards
+!create d3: Value
+!set d3.value := 3
+!insert(d1, d3) into DeckCards
+!create d4: Value
+!set d4.value := 4
+!insert(d1, d4) into DeckCards
+!create d5: Value
+!set d5.value := 5
+!insert(d1, d5) into DeckCards
+!create d6: Value
+!set d6.value := 6
+!insert(d1, d6) into DeckCards
+!create d7: Value
+!set d7.value := 7
+!insert(d1, d7) into DeckCards
+!create d8: Value
+!set d8.value := 8
+!insert(d1, d8) into DeckCards
+!create d9: Value
+!set d9.value := 9
+!insert(d1, d9) into DeckCards
+!create d10: Value
+!set d10.value := 10
+!insert(d1, d10) into DeckCards
+!create dj: Figure
+!set dj.value := 11
+!insert(d1, dj) into DeckCards
+!create dq: Figure
+!set dq.value := 12
+!insert(d1, dq) into DeckCards
+!create dk: Figure
+!set dk.value := 13
+!insert(d1, dk) into DeckCards
+!create da: Figure
+!set da.value := 14
+!insert(d1, da) into DeckCards
+
+!set d1.isEmpty := false
+!insert(d1, j1) into DeckStack
+
+-- Create a game
+
+!create g1: Game
+!set g1.isStarted := false
+!set g1.isFinished := false
+!insert(w1, g1) into WarGames
+!insert(g1, p1) into GamePlayers
+!insert(g1, p2) into GamePlayers
+!insert(g1, p3) into GamePlayers
+
+!create g2: Game
+!set g2.isStarted := true
+!set g2.isFinished := true
+!insert(w1, g2) into WarGames
+!insert(g2, p1) into GameWinner
+!insert(g2, p1) into GamePlayers
+!insert(g2, p2) into GamePlayers
+!insert(g2, p3) into GamePlayers
+!insert(g2, p4) into GamePlayers
+
+-- Create a round
+
+!create hd1, hd2: Hand
+
+!insert(hd1, g1) into HandGame
+!insert(hd2, g1) into HandGame
+
+!insert(hd1, da) into HandCards
+!insert(hd2, j1) into HandCards
+
+!insert(p1, hd1) into PlayerHands
+!insert(p2, hd2) into PlayerHands
+
+!create r1: Round
+!set r1.number := 1
+!set r1.isFinished := false
+!insert(g1, r1) into GameRounds
+
+--Test War2
+
+!delete(w1, g1) from WarGames
+!delete(w1, g2) from WarGames
+!openter w1 getFinishedGames()
