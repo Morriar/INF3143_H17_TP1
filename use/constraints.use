@@ -1,0 +1,162 @@
+--
+-- Copyright 2017 Alexandre Terrasa <alexandre@moz-code.org>.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+--
+
+constraints
+
+-- War
+
+context War
+
+	-- inv: War est une classe singleton
+	inv War1: War.allInstances()->size() = 1
+	-- inv: Tous les joueurs `Humain` de tous les `games` sont enregistrés dans `players`
+	inv War4: games->forAll(
+			g | g.players->forAll(
+				p | p.oclIsKindOf(Human) implies players->includes(p.oclAsType(Human))
+			))
+
+context War::getFinishedGames(): Set(Game)
+	-- pre: La liste `games` n'est pas vide
+	pre War2: games->notEmpty()
+	-- post: Tous les Games retournés sont à l'état `isFinished`
+	post War3: result->forAll(g | g.isFinished)
+
+context War::newGame(): Game
+	-- post: le `Game` retourné est `isStarted` mais pas `isFinished`
+	post War5: result.isStarted and not result.isFinished
+
+-- Game
+
+context Game
+
+	-- inv: Deux joueurs d'un même Game ne peuvent avoir le même nom
+    inv Game1: players->forAll(p1, p2 | p1 <> p2 implies p1.name <> p2.name)
+    -- inv: Tous les `Game` à l'état `isStarted` contiennent exactement 4 `Player`
+    inv Game2: isStarted implies players->size() = 4
+    -- inv: Tous les `Game` à l'état `isFinished` sont `isStarted` et ont un `winner`
+    inv Game3: isFinished implies isStarted and winner <> null
+	-- inv: Un `Game` à l'état `isStarted` contient au moins un joueur de type `Human`
+	inv Game4: isStarted implies players->select(p | p.oclIsKindOf(Human))->notEmpty()
+	-- inv: Le winner d'un game appartient à `players`
+	inv Game5: winner <> null implies players->includes(winner)
+
+context Game::start()
+	-- pre: Un `Game` ne peut pas être `isStarted` quand on apelle `Game::start()`
+	pre Game6: not isStarted
+	-- post: Une fois `Game::start` appelé, un `Game` doit:
+	--  * avoir un `Deck`
+	--  * avoir exactement 4 `Player`
+	--  * être `isStarted`
+    post Game7: deck <> null and players->size() = 4 and isStarted
+	-- post: Le `currentRound::number` vaut 1
+    post Game8: currentRound.number = 1
+
+context Game::nextRound(): Round
+	-- post: Retourne un nouveau round avec `number` incrémenté de 1 par rapport à currentRound@pre
+	post Game9: result.number = currentRound@pre.number + 1
+
+context Game::canPlayRound(): Boolean
+	-- post: Retourne true si tous les joueurs ont encore au moins une carte en main
+	post Game10: result = players->forAll(p | p.hands->select(game = self).cards->size() > 0)
+
+-- Deck
+
+context Deck
+	-- inv: Un `Deck` contient 54 cartes dont:
+	--  * 2 instances de `Joker`
+	--  * 16 instances de `Figure`
+	--  * 36 instances de `Value`
+    inv Deck1: cards->size() = 54
+		and cards->collect(c | c.oclIsKindOf(Joker))->count(true) = 2
+		and cards->collect(c | c.oclIsKindOf(Figure))->count(true) = 16
+		and cards->collect(c | c.oclIsKindOf(Value))->count(true) = 36
+
+	-- inv: IsEmpty implique que `stack` est vide
+	inv Deck2: isEmpty = stack->isEmpty()
+
+context Deck::addCard(card: Card)
+	-- post: Ajoute `card` dans `cards` and `stack`
+    post Deck3: cards->includes(card) and stack->includes(card)
+
+context Deck::draw(): Card
+	-- pre: On ne peut pas appeler la méthode `Deck::draw` si le `Deck` est `isEmpty`
+    pre Deck4: not isEmpty
+	-- post: La carte retournée par `Deck::draw` provient de `Deck::cards`
+	post Deck5: cards->includes(result)
+	-- post: La carte retournée par `Deck::draw` provient de `Deck::stack` mais n'est
+	-- plus dans `Deck::stack` après l'appel
+    post Deck6: stack@pre->includes(result) and not stack->includes(result)
+
+-- Cards
+
+context Joker
+	-- inv: La `valeur` des `Joker` est toujours 15
+    inv Card1: value = 15
+
+context Figure
+	-- inv: La `valeur` des `Figure` est toujours 11, 12, 13 ou 14
+    inv Card2: value > 10 and value < 15
+
+context Value
+	-- inv: La `valeur` des `Value` est toujours entre 2 et 10 inclus
+    inv Card3: value >= 2 and value <= 10
+
+context Card
+	-- inv: Une instance de `Card` ne peut jamais se trouver dans plus d'une `Hand`
+    inv Card4: Card.allInstances()->forAll(card |
+					Hand.allInstances()->forAll(h1, h2 |
+						h1.cards->includes(card) and h2.cards->includes(card) implies h1 = h2
+					)
+				)
+
+context Card
+	-- inv: Une instance de `Card` ne peut jamais se trouver dans plus qu'un `Deck`
+    inv Card5: Card.allInstances()->forAll(card |
+					Deck.allInstances()->forAll(d1, d2 |
+						d1.cards->includes(card) and d2.cards->includes(card) implies d1 = d2
+					)
+				)
+
+context Card::isBetterThan(card: Card): Boolean
+	-- post: Retourne vrai si `card.value` suppérieur ou égal à `self.value`
+    post Card6: result = (value >= card.value)
+
+-- Round
+
+context Round
+	--inv: `Round::number` est toujours suppérieur à 0
+	inv Round1: number > 0
+	--inv: Un Round est `isFinished` que si `players` et `cards` ont une taille de 4
+	inv Round2: isFinished implies cards->size() = 4 and players->size() = 4
+
+context Round::playCard(hand: Hand, card: Card)
+	-- pre: La carte passée à `playCard` doit appartenir à `hand`
+    pre Round3: hand.cards->includes(card)
+	-- pre: La hand doit appartenir à un joueur dans `Game::players` mais pas encore dans `Round::players`
+	pre Round4: game.players->includes(hand.player) and not players->includes(hand.player)
+	-- post: La carte passée à `playCard` ne se trouve plus dans `hand` mais se trouve dans `cards`
+    post Round5: not hand.cards->includes(card) and cards->includes(card)
+
+-- Players
+
+context Player
+	--inv: Un nom de joueur possède entre 3 et 32 caractères
+    inv Player1: name.size() >= 3 and name.size() <= 32
+
+context Human
+	--inv: Un joueur humain possède un nom qui n'est pas `ADMIN` ou `TEST` ou `DEV` quelque soit la casse
+    inv Player2: not Set{'ADMIN', 'TEST', 'DEV'}->includes(name.toUpper())
+    inv Player3: password.size() >= 6 and password <> name
